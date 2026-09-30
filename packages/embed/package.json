@@ -1,0 +1,41 @@
+{
+  "name": "@cieljs/embed",
+  "version": "0.0.0",
+  "description": "Qwen embedding provider for Ciel.",
+  "homepage": "https://github.com/YanChenBai/cile-core-refactor#readme",
+  "bugs": {
+    "url": "https://github.com/YanChenBai/cile-core-refactor/issues"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YanChenBai/cile-core-refactor.git",
+    "directory": "packages/embed"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "check": "vp check",
+    "prepublishOnly": "vp run build"
+  },
+  "dependencies": {
+    "@cieljs/model-kit": "workspace:*",
+    "@huggingface/transformers": "^4.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "bumpp": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

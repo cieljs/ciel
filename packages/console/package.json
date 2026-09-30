@@ -1,0 +1,36 @@
+{
+  "name": "@cieljs/console",
+  "version": "0.0.0",
+  "description": "Ciel Console UI for chat, execution traces, sessions, and usage.",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./style.css": "./dist/style.css",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "check": "vp check",
+    "prepublishOnly": "vp run build"
+  },
+  "dependencies": {
+    "@cieljs/trace": "workspace:*",
+    "@vuetify/v0": "catalog:",
+    "markstream-vue": "catalog:",
+    "vue-json-pretty": "^2.6.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0 || ^3.6.0-0"
+  }
+}

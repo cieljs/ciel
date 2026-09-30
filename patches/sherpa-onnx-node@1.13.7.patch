@@ -1,0 +1,48 @@
+diff --git a/non-streaming-asr.js b/non-streaming-asr.js
+index 42bc9740d9373b1d94ccce418bd9e7db6656cd15..5facb5affc4dbe4e749de0f32369ff43a88eca98 100644
+--- a/non-streaming-asr.js
++++ b/non-streaming-asr.js
+@@ -11,6 +11,25 @@
+ 
+ const addon = require('./addon.js');
+ 
++// 原生结果的 text/tokens 可能包含未转义的控制字符；仅修复字符串内部，其他非法 JSON 仍报错。
++function parseResult(json) {
++  let quoted = false;
++  let escaped = false;
++  let normalized = '';
++  for (const character of json) {
++    if (quoted && character.charCodeAt(0) < 0x20) {
++      normalized += '\\u' + character.charCodeAt(0).toString(16).padStart(4, '0');
++      escaped = false;
++      continue;
++    }
++    normalized += character;
++    if (escaped) escaped = false;
++    else if (quoted && character === '\\') escaped = true;
++    else if (character === '"') quoted = !quoted;
++  }
++  return JSON.parse(normalized);
++}
++
+ /**
+  * Internal symbol to mark async-created recognizers.
+  * Not accessible unless someone has a reference to this Symbol.
+@@ -138,7 +157,7 @@ class OfflineRecognizer {
+   async decodeAsync(stream) {
+     const jsonStr =
+         await addon.decodeOfflineStreamAsync(this.handle, stream.handle);
+-    return JSON.parse(jsonStr);
++    return parseResult(jsonStr);
+   }
+ 
+   /**
+@@ -148,7 +167,7 @@ class OfflineRecognizer {
+    */
+   getResult(stream) {
+     const jsonStr = addon.getOfflineStreamResultAsJson(stream.handle);
+-    return JSON.parse(jsonStr);
++    return parseResult(jsonStr);
+   }
+ }
+ 

@@ -1,0 +1,35 @@
+{
+  "name": "@cieljs/investigation",
+  "version": "0.0.0",
+  "description": "Reusable Investigation chat UI for Ciel applications.",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./style.css": "./dist/style.css",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "check": "vp check",
+    "prepublishOnly": "vp run build"
+  },
+  "dependencies": {
+    "@cieljs/console": "workspace:*",
+    "@cieljs/trace": "workspace:*",
+    "@vuetify/v0": "catalog:"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0 || ^3.6.0-0"
+  }
+}

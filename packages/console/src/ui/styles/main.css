@@ -1,0 +1,1116 @@
+@import 'markstream-vue/index.css';
+@import 'vue-json-pretty/lib/styles.css';
+
+.ciel-console {
+  --dt-accent: var(--accent, #fb7299);
+  --dt-background: var(--surface, #18181b);
+  --dt-raised: var(--surface-raised, #202023);
+  --dt-text: var(--foreground, #e4e4e7);
+  --dt-muted: var(--muted, #a1a1aa);
+  --dt-border: var(--border, #ffffff12);
+  --dt-turn-line: #ffffff24;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  container-type: inline-size;
+  background: var(--dt-background);
+  color: var(--dt-text);
+  font:
+    12px/1.55 'Segoe UI',
+    'Microsoft YaHei',
+    sans-serif;
+}
+.ciel-console * {
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: #52525b transparent;
+}
+.dt-toolbar,
+.dt-detail-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  min-height: 38px;
+  border-bottom: 1px solid var(--dt-border);
+  padding: 0 6px;
+  background: var(--dt-raised);
+}
+/* 主工具栏整条定高：页签贴到最下沿，右侧的 Session 与清空按钮按 24px 居中。 */
+.dt-toolbar {
+  height: 32px;
+  min-height: 32px;
+  gap: 8px;
+  padding: 0 8px;
+  align-items: center;
+}
+.dt-tabs {
+  display: flex;
+  min-width: 0;
+  overflow: auto;
+  gap: 0;
+}
+.dt-tab,
+.dt-button {
+  font: inherit;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  padding: 6px 9px;
+  border-radius: 0;
+}
+.dt-tab {
+  border-bottom: 2px solid transparent;
+}
+.dt-tab[data-selected] {
+  color: var(--dt-accent);
+  border-bottom-color: var(--dt-accent);
+}
+.dt-tab:hover,
+.dt-button:hover {
+  background: #ffffff08;
+}
+.dt-tab:focus-visible,
+.dt-button:focus-visible,
+.dt-row:focus-visible,
+.dt-disclosure:focus-visible {
+  outline: 1px solid var(--dt-accent);
+  outline-offset: -1px;
+}
+.dt-clear {
+  margin-left: auto;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 6px;
+}
+.dt-toolbar > .dt-tabs {
+  align-self: stretch;
+  flex-shrink: 0;
+}
+.dt-session-select {
+  display: flex;
+  align-items: center;
+  flex: 0 1 240px;
+  min-width: 0;
+  max-width: 240px;
+}
+.dt-session-activator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 24px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.dt-session-activator:hover,
+.dt-session-activator[data-open] {
+  background: #ffffff0d;
+}
+.dt-session-value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dt-session-cue {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--dt-muted);
+}
+.dt-session-menu {
+  z-index: 20;
+  /* 下拉至少和触发器同宽，内容更长时才放宽；不支持 anchor-size 时退回按内容定宽。 */
+  min-width: min(420px, calc(100vw - 16px));
+  min-width: max(200px, anchor-size(width));
+  max-width: min(420px, calc(100vw - 16px));
+  max-height: 280px;
+  overflow: auto;
+  padding: 4px;
+  border: 1px solid var(--dt-border);
+  border-radius: 7px;
+  background: var(--dt-raised);
+  color: var(--dt-text);
+  box-shadow: 0 10px 30px #0008;
+}
+.dt-session-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 6px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.dt-session-option > span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dt-session-option > small {
+  color: var(--dt-accent);
+}
+.dt-session-option:is(:hover, [data-highlighted], [data-selected]) {
+  background: #ffffff0e;
+}
+/* 轨迹搜索独立成 inspect 自己的头，主工具栏只保留视图切换与 Session。 */
+.dt-execution {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.dt-execution-head {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  height: 30px;
+  padding: 0 8px;
+  border-bottom: 1px solid var(--dt-border);
+  background: var(--dt-raised);
+}
+/* 搜索框靠右，保留描边与圆角，只把高度收到 24px。 */
+.dt-execution-head .dt-filter {
+  width: min(220px, 55%);
+  min-width: 0;
+  height: 24px;
+  /* 宿主常给全局 input 加 margin-top，这里显式清零才能保证在头部里垂直居中。 */
+  margin: 0 0 0 auto;
+  padding: 1px 8px;
+  border: 1px solid var(--dt-border);
+  border-radius: 6px;
+  background: #ffffff07;
+  font: inherit;
+  color: inherit;
+}
+.dt-execution-head .dt-filter::placeholder {
+  color: var(--dt-muted);
+}
+.dt-execution-head .dt-filter:focus {
+  border-color: color-mix(in srgb, var(--dt-accent) 60%, var(--dt-border));
+  outline: 1px solid var(--dt-accent);
+  outline-offset: -1px;
+  background: #ffffff0d;
+}
+.dt-network {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.dt-network.has-detail {
+  grid-template-columns: minmax(100px, var(--dt-split, 36%)) 1px minmax(0, 1fr);
+}
+.dt-list-panel {
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+.dt-trace-panel {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.dt-trace-panel .dt-list-panel {
+  height: 100%;
+}
+/* 「返回最新 / 返回底部」是同一枚悬浮胶囊，轨迹和对话共用一套样式。 */
+.dt-jump-latest,
+.dt-jump-bottom {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  display: none;
+  transform: translateX(-50%);
+  padding: 6px 12px;
+  border: 1px solid var(--dt-border);
+  border-radius: 999px;
+  background: var(--dt-raised);
+  color: var(--dt-accent);
+  font-size: 12px;
+  box-shadow: none;
+}
+.dt-jump-latest {
+  z-index: 2;
+}
+.dt-jump-latest:hover,
+.dt-jump-bottom:hover {
+  background: #ffffff14;
+}
+.dt-trace-panel:has(.dt-list-panel[data-detached]) .dt-jump-latest {
+  display: block;
+}
+.dt-list {
+  min-width: 0;
+  flex: 1;
+}
+/* 表头与行共用同一套列宽，右侧的开始时间与耗时才能逐列对齐。 */
+.dt-list-heading,
+.dt-row {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) 32px 58px 52px;
+  align-items: center;
+  gap: 7px;
+  padding: 0 8px;
+}
+.dt-list-heading {
+  height: 29px;
+  position: sticky;
+  top: 0;
+  background: var(--dt-raised);
+  border-bottom: 1px solid var(--dt-border);
+  z-index: 1;
+}
+.dt-list-heading > span {
+  font-size: 11px;
+  color: var(--dt-muted);
+}
+.dt-row {
+  width: 100%;
+  min-width: 0;
+  height: 27px;
+  border: 0;
+  background: var(--dt-background);
+  color: inherit;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+/* 轮次开头：一条中性分隔线横穿整行，无边框的轮次徽标垂直悬浮在线上，
+   靠自身底色压住线段，并把上下相邻的行各让出一点空隙。 */
+.dt-turn-divider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 26px;
+  margin-block: 3px;
+  padding: 0 8px;
+  color: var(--dt-muted);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.dt-turn-divider::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--dt-turn-line);
+}
+.dt-turn-badge {
+  position: relative;
+  padding: 1px 6px;
+  border: 1px solid var(--dt-turn-line);
+  border-radius: 4px;
+  background: var(--dt-raised);
+}
+.dt-actor-tag {
+  flex: 0 0 38px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: color-mix(in srgb, #a78bfa 18%, transparent);
+  color: #c4b5fd;
+  text-align: center;
+  font-size: 9px;
+  line-height: 16px;
+  font-weight: 650;
+}
+.dt-actor-tag[data-actor='Tool'] {
+  background: color-mix(in srgb, #f59e0b 16%, transparent);
+  color: #fbbf24;
+}
+.dt-row:nth-child(even) {
+  background: var(--dt-raised);
+}
+.dt-row:hover {
+  background: #ffffff0e;
+}
+.dt-row.selected {
+  background: color-mix(in srgb, var(--dt-accent) 16%, var(--dt-background));
+  color: #f4f4f5;
+}
+.dt-step-icon {
+  color: #f28c59;
+  flex-shrink: 0;
+}
+.dt-step-icon[data-kind='message'] {
+  color: var(--dt-accent);
+}
+.dt-row[data-status='error'],
+.dt-row[data-status='error'] .dt-step-icon,
+.dt-row[data-status='error'] .dt-duration {
+  color: #ffadb9;
+}
+.dt-row[data-status='error'] {
+  box-shadow: inset 2px 0 #ff7188;
+  background: color-mix(in srgb, #ff7188 8%, var(--dt-background));
+}
+.dt-row[data-status='error'].selected {
+  background: color-mix(in srgb, #ff7188 18%, var(--dt-background));
+}
+.dt-step-context {
+  display: block;
+  color: var(--dt-muted);
+  font-size: 9px;
+  line-height: 12px;
+}
+.dt-row:has(.dt-step-context) {
+  height: 39px;
+}
+.dt-step-status {
+  justify-self: center;
+  flex-shrink: 0;
+  font-size: 10px;
+}
+.dt-row[data-status='running'] .dt-step-status {
+  color: var(--dt-accent);
+}
+.dt-failure > .dt-disclosure {
+  color: #ffadb9;
+}
+.dt-event-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dt-event-selector select {
+  min-width: 0;
+  width: auto;
+  max-width: 180px;
+  height: 24px;
+  /* 宿主常用全局 select { margin-top } 排版表单，会把这个 flex 子项推离居中。 */
+  margin: 0;
+  padding: 1px 5px;
+  font-size: 11px;
+  background: var(--dt-raised);
+  color: var(--dt-text);
+  border: 1px solid var(--dt-border);
+}
+.dt-status-icon {
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+.dt-status-icon[data-status='running'] {
+  color: var(--dt-accent);
+}
+.dt-status-icon[data-status='error'] {
+  color: #ffadb9;
+}
+.dt-step-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.dt-detail {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.dt-detail-toolbar {
+  padding-left: 0;
+  gap: 0;
+}
+.dt-close {
+  font-size: 20px;
+  padding: 0 8px;
+}
+.dt-detail-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.dt-json-payload {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+}
+.dt-json-payload > .dt-json {
+  flex: 1;
+  min-height: 0;
+}
+.dt-section {
+  border-bottom: 1px solid var(--dt-border);
+}
+.dt-disclosure {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  min-height: 31px;
+  text-align: left;
+  padding: 4px 8px;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  background: var(--dt-raised);
+  cursor: pointer;
+}
+.dt-cue {
+  display: inline-block;
+  transform: rotate(0);
+  font-size: 17px;
+}
+.dt-cue[data-state='open'] {
+  transform: rotate(90deg);
+}
+.dt-section-content {
+  padding: 10px 12px;
+  overflow-wrap: anywhere;
+}
+.dt-section dl {
+  display: grid;
+  grid-template-columns: minmax(65px, 34%) minmax(0, 1fr);
+  gap: 8px 12px;
+  margin: 0;
+}
+.dt-section dt {
+  color: var(--dt-muted);
+}
+.dt-section dd {
+  margin: 0;
+  user-select: text;
+  overflow-wrap: anywhere;
+}
+.dt-tool-description {
+  white-space: pre-wrap;
+}
+/* 面板本身不滚动，滚动与「返回底部」按钮分层放置。 */
+.dt-conversation-panel {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+.dt-conversation {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 16px 18px 24px;
+}
+/* 只有滚离底部时才出现，点它回到最新消息并恢复跟随；居中压在对话底部。 */
+.dt-conversation-panel:has(.dt-conversation[data-detached]) .dt-jump-bottom {
+  display: block;
+}
+/* 时间和来源压成一行，正文保持平铺；细分隔线帮助辨认连续消息。 */
+.dt-message {
+  max-width: 840px;
+  margin: 0 auto;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--dt-border);
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+.dt-message:first-child {
+  padding-top: 2px;
+}
+.dt-message:last-child {
+  border-bottom: 0;
+}
+.dt-message:not([data-role='assistant']) .dt-content {
+  color: var(--dt-muted);
+}
+.dt-message-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 18px;
+  margin-bottom: 8px;
+  color: var(--dt-muted);
+  font-size: 10px;
+  line-height: 1.5;
+}
+.dt-message-marker {
+  flex: 0 0 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--dt-muted);
+  opacity: 0.6;
+}
+.dt-message[data-role='assistant'] .dt-message-marker {
+  background: var(--dt-accent);
+  opacity: 1;
+}
+.dt-message-meta time {
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.8;
+}
+.dt-message-note {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+}
+.dt-message-state {
+  margin-left: auto;
+  color: var(--dt-accent);
+}
+.dt-message[data-status='error'] .dt-message-state {
+  color: #ffadb9;
+}
+.dt-message-loading {
+  margin: 0;
+  color: var(--dt-muted);
+  font-size: 11px;
+}
+.dt-message-placeholder {
+  margin: 0;
+  color: var(--dt-muted);
+  font-size: 12px;
+}
+.dt-message-skeleton {
+  display: grid;
+  gap: 7px;
+  width: min(520px, 72%);
+  padding-block: 3px;
+}
+.dt-message-skeleton span {
+  height: 9px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ffffff09 20%, #ffffff18 45%, #ffffff09 70%);
+  background-size: 220% 100%;
+  animation: dt-message-skeleton 1.4s ease-in-out infinite;
+}
+.dt-message-skeleton span:nth-child(2) {
+  width: 86%;
+}
+.dt-message-skeleton span:nth-child(3) {
+  width: 58%;
+}
+@keyframes dt-message-skeleton {
+  to {
+    background-position-x: -220%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dt-message-skeleton span {
+    animation: none;
+  }
+}
+.dt-message .dt-section {
+  margin: 8px 0;
+  border: 0;
+  border-bottom: 1px solid var(--dt-border);
+}
+/* 区块分隔线只在消息内部起作用；落在消息末尾时让位给消息自身的分隔线，
+   否则同一处会并排出现两条下边框。 */
+.dt-message .dt-content > .dt-section:last-child {
+  border-bottom: 0;
+}
+.dt-message .dt-disclosure {
+  min-height: 32px;
+  padding: 5px 0;
+  color: var(--dt-muted);
+  background: transparent;
+  gap: 8px;
+  font-size: 11px;
+}
+.dt-message .dt-disclosure:hover {
+  color: var(--dt-text);
+}
+.dt-disclosure-title {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dt-message .dt-section-content {
+  padding: 6px 0 14px 16px;
+  color: var(--dt-muted);
+}
+.dt-tool-status {
+  flex-shrink: 0;
+  color: var(--dt-muted);
+  font-size: 10px;
+}
+.dt-tool-section[data-status='running'] .dt-tool-status {
+  color: var(--dt-accent);
+}
+.dt-tool-section[data-status='error'] > .dt-disclosure,
+.dt-tool-section[data-status='error'] .dt-tool-status {
+  color: #ffadb9;
+}
+.dt-thinking .dt-cue {
+  font-size: 15px;
+}
+.dt-message .dt-tool-call .dt-json-toolbar {
+  position: static;
+  /* 对话里的 JSON 容器是 raised 底色，工具条跟着它走，否则顶部会多出一条 background 色带。 */
+  background: var(--dt-raised);
+}
+.dt-message .dt-tool-call .dt-json {
+  padding: 8px 10px;
+  border: 1px solid var(--dt-border);
+  border-radius: 8px;
+  overflow: auto;
+  background: var(--dt-raised);
+}
+.dt-tool-call {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.dt-tool-call > p {
+  margin: 0;
+}
+.dt-tool-part {
+  color: var(--dt-muted);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+.dt-tool-note {
+  color: var(--dt-muted);
+  font-size: 12px;
+}
+/* 感知帧是 1920×1080 拼图，默认只占一行缩略图，点击后撑满面板。 */
+.dt-image {
+  display: block;
+  max-width: min(240px, 100%);
+  height: auto;
+  border-radius: 8px;
+  cursor: zoom-in;
+}
+.dt-image.zoomed {
+  max-width: 100%;
+  cursor: zoom-out;
+}
+.dt-empty {
+  padding: 20px 12px;
+  color: #71717a;
+  text-align: center;
+}
+.dt-error {
+  padding: 6px 10px;
+  color: #ffadb9;
+  overflow-wrap: anywhere;
+}
+.dt-network[hidden],
+.dt-conversation-panel[hidden],
+.dt-detail-body[hidden] {
+  display: none;
+}
+
+.dt-resizer {
+  position: relative;
+  cursor: col-resize;
+  touch-action: none;
+  background: var(--dt-border);
+}
+.dt-resizer::before {
+  position: absolute;
+  inset: 0 -4px;
+  content: '';
+}
+.dt-resizer:hover,
+.dt-resizer:focus-visible {
+  background: var(--dt-accent);
+  outline: none;
+}
+.dt-payload {
+  --dt-payload-padding: 12px;
+  padding: var(--dt-payload-padding);
+}
+.dt-timing dl {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 9px 12px;
+  margin: 0;
+}
+.dt-timing dt {
+  color: var(--dt-muted);
+}
+.dt-timing dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* 原始事件的 JSON 树。库自带的是浅色皮肤，这里按 --dt-* 重新上色。
+   左侧行号沟槽由库自己按位数写 inline padding-left 到 .vjs-tree，不要再补内边距。 */
+.dt-json {
+  padding: 8px 10px;
+  border: 1px solid var(--dt-border);
+  border-radius: 8px;
+  overflow: auto;
+  background: var(--dt-raised);
+  user-select: text;
+}
+.dt-json-plain {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.dt-json-plain .dt-json-toolbar {
+  background: var(--dt-background);
+}
+.dt-json-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  padding: 2px 0;
+  background: var(--dt-raised);
+}
+.dt-json-note {
+  color: var(--dt-muted);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+.dt-json-copy {
+  margin-left: auto;
+  padding: 2px 7px;
+  font-size: 10px;
+  color: var(--dt-muted);
+}
+.dt-json-copy:hover {
+  color: var(--dt-accent);
+}
+.ciel-console .dt-json .vjs-tree {
+  font-size: 11px;
+  line-height: 1.7;
+}
+/* 库的 .vjs-tree-node.dark:hover 是三个类，深色底要靠 .ciel-console 才压得住。 */
+.ciel-console .dt-json .vjs-tree-node:hover,
+.ciel-console .dt-json .vjs-tree-node.is-highlight {
+  background-color: #ffffff08;
+}
+.ciel-console .dt-json .vjs-node-index {
+  min-width: 2ch;
+  color: var(--dt-muted);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+.ciel-console .dt-json .vjs-tree-node {
+  min-width: max-content;
+}
+.ciel-console .dt-json .vjs-indent-unit.has-line {
+  border-left-color: var(--dt-border);
+}
+.ciel-console .dt-json .vjs-comment {
+  color: var(--dt-muted);
+}
+.ciel-console .dt-json :is(.vjs-tree-brackets, .vjs-carets):hover {
+  color: var(--dt-accent);
+}
+/* 库的 #1d8ce0 / #13ce66 是配浅色底的，深色底上偏暗，整体提亮一档。 */
+.ciel-console .dt-json :is(.vjs-value-number, .vjs-value-boolean) {
+  color: #6cb8ff;
+}
+.ciel-console .dt-json .vjs-value-string {
+  color: #7ee2a8;
+}
+.ciel-console .dt-json :is(.vjs-value-null, .vjs-value-undefined) {
+  color: #d9a0f0;
+}
+.ciel-console .markdown-renderer {
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.dt-list-panel,
+.dt-conversation,
+.dt-detail-body {
+  overscroll-behavior: contain;
+}
+
+/* 视图切换留在左侧，Session 与清空按钮一起靠右；auto 外边距只放在 Session 上。 */
+.dt-toolbar .dt-session-select {
+  margin-left: auto;
+}
+.dt-toolbar .dt-clear {
+  width: 28px;
+  height: 24px;
+  margin-left: 0;
+  padding: 0;
+}
+/* 宿主经 #actions 插槽放进工具栏的图标按钮：几何与「清空视图」一致，别挤动 Session 选择器。 */
+.dt-toolbar .dt-action {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 24px;
+  padding: 0;
+  border-radius: 6px;
+}
+/* 插槽里的按钮常常需要禁用态（宿主能力未就绪）；禁用后不该再有 hover 反馈。 */
+.dt-button:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+.dt-button:disabled:hover {
+  background: transparent;
+}
+.dt-toolbar .dt-usage {
+  margin-left: 0;
+}
+/* 面板最窄只有 260px，用量可以整段被裁掉（min-width: 0），不会把清空按钮挤出可视区。 */
+.dt-usage {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 10px;
+  color: var(--dt-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.dt-usage-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.dt-usage-label {
+  opacity: 0.75;
+}
+.dt-usage-value {
+  color: var(--dt-text);
+}
+.dt-usage-note {
+  opacity: 0.85;
+}
+.dt-usage-rate {
+  color: var(--dt-accent);
+}
+.dt-step-name {
+  min-width: 0;
+}
+.dt-duration {
+  justify-self: end;
+  flex-shrink: 0;
+  font-size: 10px;
+  color: var(--dt-muted);
+  font-variant-numeric: tabular-nums;
+}
+.dt-start-time {
+  color: var(--dt-muted);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.ciel-console .dt-content {
+  font-size: 12px;
+  line-height: 1.7;
+}
+.ciel-console .dt-content :is(h1, h2, h3, h4, h5, h6) {
+  margin: 16px 0 8px;
+  padding: 0;
+  border: 0;
+  font-weight: 650;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: capitalize;
+}
+.ciel-console .dt-content h1 {
+  font-size: 18px;
+}
+.ciel-console .dt-content h2 {
+  font-size: 16px;
+}
+.ciel-console .dt-content h3 {
+  font-size: 14px;
+}
+.ciel-console .dt-content :is(h4, h5, h6) {
+  font-size: 13px;
+}
+.ciel-console .dt-content :is(p, ul, ol, blockquote) {
+  font-size: 12px;
+  line-height: 1.7;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+.ciel-console .dt-content :is(ul, ol) {
+  padding-left: 20px;
+}
+.ciel-console .dt-content li {
+  margin: 3px 0;
+}
+.ciel-console .dt-content pre {
+  font-size: 11px;
+  line-height: 1.6;
+}
+/* 代码块（多是工具返回的 JSON）：比面板亮一档的抬升面 + 一条细描边。
+   留白统一由容器给，内层 pre 自带的 padding 与主题底色一并清掉，免得层层叠加。 */
+.ciel-console .dt-content .code-block-container {
+  --code-bg: color-mix(in srgb, var(--dt-background) 92%, #fff);
+  --code-header-bg: transparent;
+  margin: 10px 0;
+  padding: 10px 12px;
+  border: 1px solid var(--dt-border);
+  border-radius: 8px;
+  box-shadow: none;
+}
+.ciel-console
+  .dt-content
+  .code-block-container
+  :is(.code-block-header, .code-block-shell-content, .stream-diffs-shell, .code-editor-layer, pre) {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0;
+  border-radius: 0;
+  background: transparent !important;
+}
+/* 标题行只有语言名与操作按钮，压在代码上方一行。 */
+.ciel-console .dt-content .code-block-container .code-block-header {
+  margin-bottom: 6px !important;
+  color: #71717a;
+}
+.ciel-console
+  .dt-content
+  .code-block-container
+  .code-block-header
+  :is(.code-header-title, .code-header-caption) {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+}
+.ciel-console .dt-content blockquote {
+  padding-left: 10px;
+  border-left: 2px solid var(--dt-accent);
+  color: var(--dt-muted);
+}
+.ciel-console .dt-content img {
+  margin: 10px 0;
+  border-radius: 6px;
+}
+
+.dt-execution-panel {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.dt-session-status {
+  flex: 0 0 auto;
+  border-top: 1px solid var(--dt-border);
+  background: var(--dt-raised);
+}
+.dt-session-status-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  max-width: calc(100% - 16px);
+  min-height: 29px;
+  margin-inline: auto;
+  padding: 4px 9px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  justify-content: center;
+}
+.dt-session-status-trigger:hover {
+  background: #ffffff08;
+}
+.dt-session-progress {
+  flex-shrink: 0;
+  color: var(--dt-text);
+  font-variant-numeric: tabular-nums;
+}
+.dt-session-usage-summary {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--dt-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.dt-session-metrics {
+  z-index: 30;
+  width: min(380px, calc(100vw - 16px));
+  width: min(calc(100vw - 16px), max(310px, anchor-size(width)));
+  max-height: min(360px, calc(100vh - 52px));
+  overflow: auto;
+  translate: 0 -7px;
+  padding: 9px 12px 11px;
+  border: 1px solid var(--dt-border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--dt-raised) 92%, #fff);
+  color: var(--dt-text);
+  box-shadow: 0 6px 18px #0000004d;
+}
+.dt-metric-primary {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 8px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--dt-border);
+}
+.dt-metric-primary strong {
+  font-variant-numeric: tabular-nums;
+}
+.dt-session-metrics dl {
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) auto;
+  gap: 4px 18px;
+  margin: 0;
+}
+.dt-session-metrics dt {
+  color: var(--dt-muted);
+}
+.dt-session-metrics dd {
+  margin: 0;
+  color: var(--dt-text);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 面板变窄时只让 Session 收窄，不再折行：工具栏整高、片段无边框，折行会破坏对齐。 */
+@container (max-width: 520px) {
+  .dt-session-select {
+    max-width: none;
+  }
+}
+
+.ciel-console .dt-message .dt-content,
+.ciel-console .dt-message .markdown-renderer,
+.ciel-console .dt-message .dt-content :is(p, ul, ol, blockquote) {
+  font-size: 13px;
+  line-height: 1.85;
+}
+.ciel-console .dt-message .dt-content :is(p, ul, ol, blockquote) {
+  margin-block: 8px;
+}
+.ciel-console .dt-message .dt-thinking .markdown-renderer {
+  font-size: 12px;
+  line-height: 1.8;
+}
+.ciel-console .dt-message .dt-content .code-block-container {
+  border: 1px solid var(--dt-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+}

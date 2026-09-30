@@ -1,0 +1,9 @@
+{
+  "extends": "@electron-toolkit/tsconfig/tsconfig.node.json",
+  "include": ["vite.config.*", "src/main/**/*", "src/preload/**/*", "src/shared/**/*"],
+  "compilerOptions": {
+    "rewriteRelativeImportExtensions": true,
+    "composite": true,
+    "types": ["veldorajs/node", "node"]
+  }
+}

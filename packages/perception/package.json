@@ -1,0 +1,33 @@
+{
+  "name": "@cieljs/perception",
+  "version": "0.0.0",
+  "description": "Multimodal perception snapshots for Ciel agents.",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "check": "vp check",
+    "prepublishOnly": "vp run build"
+  },
+  "dependencies": {
+    "@cieljs/hearing": "workspace:*",
+    "@earendil-works/pi-agent-core": "catalog:",
+    "sharp": "^0.35.4"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "bumpp": "^12.3.0",
+    "typescript": "^7.0.2",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}
