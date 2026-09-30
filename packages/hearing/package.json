@@ -1,0 +1,41 @@
+{
+  "name": "@cieljs/hearing",
+  "version": "0.0.0",
+  "description": "Streaming ASR, VAD, speaker recognition, and voiceprint tooling for Ciel.",
+  "license": "MIT",
+  "bin": {
+    "hearing": "./dist/ciel.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./ciel": "./dist/ciel.mjs",
+    "./worker": "./dist/worker.mjs",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev": "oxnode ./src/cli/index.ts",
+    "install-model": "oxnode ./src/cli/index.ts install-model",
+    "voiceprint": "oxnode ./src/cli/index.ts voiceprint",
+    "check": "vp check",
+    "prepublishOnly": "vp run build"
+  },
+  "dependencies": {
+    "pinyin-pro": "catalog:",
+    "sherpa-onnx-node": "^1.13.7"
+  },
+  "devDependencies": {
+    "@oxc-node/cli": "catalog:",
+    "@types/node": "^26.6.2",
+    "bumpp": "^12.3.0",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "name": "@cieljs/agent-kit",
+  "version": "0.0.0",
+  "description": "Agent prompts, tools, and runtime event contracts for Ciel.",
+  "homepage": "https://github.com/YanChenBai/cile-core-refactor#readme",
+  "bugs": {
+    "url": "https://github.com/YanChenBai/cile-core-refactor/issues"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YanChenBai/cile-core-refactor.git",
+    "directory": "packages/agent-kit"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./protocol": "./dist/protocol.mjs",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "check": "vp check",
+    "prepublishOnly": "vp run build"
+  },
+  "dependencies": {
+    "@earendil-works/pi-agent-core": "catalog:",
+    "typebox": "catalog:pi"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "bumpp": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

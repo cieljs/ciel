@@ -1,0 +1,38 @@
+{
+  "name": "@cieljs/voice-agent",
+  "version": "0.0.0",
+  "description": "多人语音聊天参与者：感知、思考、发言与播放的纯 Node 应用。",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev": "oxnode ./src/cli/index.ts start",
+    "list-devices": "oxnode ./src/cli/index.ts list-devices",
+    "start": "oxnode ./src/cli/index.ts start",
+    "check": "vp check",
+    "prepublishOnly": "vp run build"
+  },
+  "dependencies": {
+    "@earendil-works/pi-agent-core": "catalog:",
+    "@earendil-works/pi-ai": "catalog:",
+    "cieljs": "workspace:*",
+    "decibri": "^5.7.0",
+    "typebox": "catalog:"
+  },
+  "devDependencies": {
+    "@oxc-node/cli": "catalog:",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

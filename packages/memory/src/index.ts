@@ -1,0 +1,50 @@
+export {
+  MemoryAccessError,
+  MemoryArchivedError,
+  MemoryClosedError,
+  MemoryConflictError,
+  MemoryError,
+  MemoryNotFoundError,
+  MemoryValidationError,
+  type MemoryErrorCode,
+} from './errors.ts';
+export { MemoryManager } from './memory-manager.ts';
+export type { GlobalLongTermMemory, MemoryLayerStore, SpaceMemory } from './memory-store.ts';
+export { tokenizeSearchText } from './search.ts';
+export type {
+  DailyRememberInput,
+  EmbeddingOptions,
+  EmbeddingProvider,
+  FindMemorySpacesOptions,
+  ArchiveMemoryOptions,
+  LongTermRememberInput,
+  MemoryEntry,
+  MemoryEntryFor,
+  MemoryHistoryOptions,
+  MemoryIndexStatus,
+  MemoryKind,
+  MemoryLayer,
+  MemoryListOptions,
+  MemoryManagerOptions,
+  MemoryReadOptions,
+  MemoryRevision,
+  MemorySearchHit,
+  MemorySearchMatch,
+  MemorySearchMode,
+  MemorySearchOptions,
+  MemorySource,
+  MemorySourceSearchHit,
+  MemorySourceSearchMode,
+  MemorySourceSearchOptions,
+  MemorySpaceSourceHit,
+  MemoryStatus,
+  SearchAllMemoryOptions,
+  SpaceMemoryEntry,
+  SpaceMemoryLayer,
+  SpaceMemoryListOptions,
+  SpaceMemorySearchOptions,
+  SpaceMemorySourceSearchOptions,
+  UpdateMemoryInput,
+} from './types.ts';
+
+export { memoryStorage } from './storage-module.ts';

@@ -1,0 +1,1 @@
+{"label":"relation-parts","ms":21,"rows":[{"relation":"trace.records","heap_bytes":"97558528","index_bytes":"51085312","total_bytes":"3923132416"},{"relation":"storage.events","heap_bytes":"6995968","index_bytes":"7700480","total_bytes":"1655218176"},{"relation":"trace.__migrations","heap_bytes":"8192","index_bytes":"16384","total_bytes":"32768"}]}

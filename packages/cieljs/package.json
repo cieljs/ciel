@@ -1,0 +1,69 @@
+{
+  "name": "cieljs",
+  "version": "0.0.0",
+  "description": "Composable Ciel agent runtime.",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./agent-kit": "./dist/agent-kit.mjs",
+    "./console": "./dist/console.mjs",
+    "./console/style.css": "./dist/console/style.css",
+    "./embed": "./dist/embed.mjs",
+    "./hearing": "./dist/hearing.mjs",
+    "./investigation": "./dist/investigation.mjs",
+    "./investigation/style.css": "./dist/investigation/style.css",
+    "./mcp": "./dist/mcp.mjs",
+    "./memory": "./dist/memory.mjs",
+    "./memory/agent": "./dist/memory/agent.mjs",
+    "./model-kit": "./dist/model-kit.mjs",
+    "./model-kit/models": "./dist/model-kit/models.mjs",
+    "./perception": "./dist/perception.mjs",
+    "./runtime": "./dist/runtime.mjs",
+    "./session": "./dist/session.mjs",
+    "./session/agent": "./dist/session/agent.mjs",
+    "./storage": "./dist/storage.mjs",
+    "./trace": "./dist/trace.mjs",
+    "./trace/client": "./dist/trace/client.mjs",
+    "./trace/host": "./dist/trace/host.mjs",
+    "./trace/protocol": "./dist/trace/protocol.mjs",
+    "./vector": "./dist/vector.mjs",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "check": "vp check",
+    "prepublishOnly": "vp run build"
+  },
+  "dependencies": {
+    "@cieljs/agent-kit": "workspace:*",
+    "@cieljs/console": "workspace:*",
+    "@cieljs/embed": "workspace:*",
+    "@cieljs/hearing": "workspace:*",
+    "@cieljs/investigation": "workspace:*",
+    "@cieljs/mcp": "workspace:*",
+    "@cieljs/memory": "workspace:*",
+    "@cieljs/model-kit": "workspace:*",
+    "@cieljs/perception": "workspace:*",
+    "@cieljs/runtime": "workspace:*",
+    "@cieljs/session": "workspace:*",
+    "@cieljs/storage": "workspace:*",
+    "@cieljs/trace": "workspace:*",
+    "@cieljs/vector": "workspace:*",
+    "@earendil-works/pi-agent-core": "catalog:",
+    "@earendil-works/pi-ai": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "cieljs": "workspace:*",
+    "typebox": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

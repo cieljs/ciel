@@ -1,0 +1,37 @@
+{
+  "name": "@cieljs/blive-agent",
+  "version": "0.0.0",
+  "description": "An Electron application with Vue and TypeScript",
+  "homepage": "https://electron-vite.org",
+  "author": "byc.com",
+  "type": "module",
+  "main": "./out/main/index.js",
+  "dependencies": {
+    "@cieljs/bili-agent-tools": "workspace:*",
+    "@earendil-works/pi-agent-core": "catalog:",
+    "@earendil-works/pi-ai": "catalog:",
+    "@lucide/vue": "catalog:",
+    "@orpc/client": "catalog:",
+    "@orpc/server": "catalog:",
+    "@vuetify/v0": "catalog:",
+    "cieljs": "workspace:*",
+    "typebox": "catalog:",
+    "vue": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@electron-toolkit/tsconfig": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "@types/node": "catalog:",
+    "@vitejs/plugin-vue": "catalog:",
+    "electron": "^44.4.3",
+    "electron-builder": "^26.15.3",
+    "electron-updater": "^6.8.9",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:",
+    "veldorajs": "0.0.4",
+    "vite": "catalog:",
+    "vue-tsc": "catalog:"
+  },
+  "packageManager": "pnpm@12.5.1"
+}

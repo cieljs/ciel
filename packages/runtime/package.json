@@ -1,0 +1,38 @@
+{
+  "name": "@cieljs/runtime",
+  "version": "0.0.0",
+  "description": "Ciel runtime with isolated session, memory, and investigation agents.",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "check": "vp check",
+    "prepublishOnly": "vp run build"
+  },
+  "dependencies": {
+    "@cieljs/agent-kit": "workspace:*",
+    "@cieljs/memory": "workspace:*",
+    "@cieljs/session": "workspace:*",
+    "@earendil-works/pi-agent-core": "catalog:",
+    "@earendil-works/pi-ai": "catalog:",
+    "typebox": "catalog:"
+  },
+  "devDependencies": {
+    "@cieljs/storage": "workspace:*",
+    "@cieljs/trace": "workspace:*",
+    "@cieljs/vector": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

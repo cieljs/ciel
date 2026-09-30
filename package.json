@@ -1,0 +1,26 @@
+{
+  "name": "@cieljs/workspace",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "ready": "vpr -r build && vp check && vp test",
+    "prepare": "vp config"
+  },
+  "devDependencies": {
+    "@stylistic/eslint-plugin": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.5.1",
+      "onFail": "download"
+    }
+  },
+  "engines": {
+    "node": ">=24.11.1"
+  },
+  "packageManager": "pnpm@12.5.1"
+}
